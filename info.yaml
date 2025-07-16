@@ -38,10 +38,10 @@ pinout:
 
   # Outputs
   uo[0]: "uart_tx"
-  uo[1]: "LED[0]"
-  uo[2]: "LED[1]"
-  uo[3]: "LED[2]"
-  uo[4]: "LED[3]"
+  uo[1]: "LED3[0]"
+  uo[2]: "LED3[1]"
+  uo[3]: "LED3[2]"
+  uo[4]: "LED3[3]"
   uo[5]: ""
   uo[6]: ""
   uo[7]: ""
