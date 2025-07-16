@@ -112,8 +112,8 @@ module tt_um_badhri_uart(
             rdy_clr <= 1;        // Clear the rdy flag
         end
     end
-    always @(negedge rst_n) begin
-        if(!rst_n) begin
+    always @(posedge rst_n) begin
+        if(rst_n) begin
             LED3 <= 4'd0;
             LED1 <= 4'd0;
             LED2 <= 4'd0;
