@@ -10,6 +10,7 @@ module tt_um_badhri_uart(
     input wire clk,          // 100MHz clock from Basys3
     input wire uart_rx,      // UART RX from PC
     output wire uart_tx,     // UART TX to PC
+    input  wire ena,      // always 1 when the design is powered, so you can ignore it
     // LEDs display received byte
     output reg [3:0] LED3
 );
