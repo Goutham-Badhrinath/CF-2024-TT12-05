@@ -3,7 +3,7 @@ project:
   title:        "UART"      # Project title
   author:       "Goutham Badhrinath V"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  description:  "A uart rx tx design to load data from host laptop and back"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     50000000       # Clock frequency in Hz (or 0 if not applicable)
 
