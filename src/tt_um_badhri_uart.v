@@ -12,7 +12,8 @@ module tt_um_badhri_uart(
     output wire uart_tx,     // UART TX to PC
     input  wire ena,      // always 1 when the design is powered, so you can ignore it
     // LEDs display received byte
-    output reg [3:0] LED3
+    output reg [3:0] LED3,
+    input  wire rst_n     // reset_n - low to reset
 );
 reg [7:0] LED;
     reg [3:0] LED1,LED2,LED4;
@@ -30,7 +31,7 @@ reg [7:0] LED;
         .din(din),
         .wr_en(wr_en),
         .clk_50m(clk),     // Basys3 clock is 100MHz, but your UART expects 50MHz.
-                           // This works *only* if your baud_gen assumes 100MHz,
+        .rst(rst_n),                   // This works *only* if your baud_gen assumes 100MHz,
                            // otherwise use a clock divider.
         .tx(uart_tx),
         .tx_busy(tx_busy),
@@ -92,6 +93,14 @@ reg [7:0] LED;
             din <= dout;         // Echo the received byte back
             wr_en <= 1;          // Trigger transmission
             rdy_clr <= 1;        // Clear the rdy flag
+        end
+    end
+    always @(negedge rst_n) begin
+        if(!rst_n) begin
+            LED3 <= 4'd0;
+            LED1 <= 4'd0;
+            LED1 <= 4'd0;
+            LED4 <= 4'd0;
         end
     end
 
