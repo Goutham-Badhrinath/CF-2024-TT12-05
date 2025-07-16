@@ -14,7 +14,7 @@ module tt_um_badhri_uart(
     output reg [3:0] LED3
 );
 reg [7:0] LED;
-    reg [3:0] LED1,LED2;
+    reg [3:0] LED1,LED2,LED4;
     reg [31:0] instr_mem;
     wire [7:0] dout;
     wire rdy;
