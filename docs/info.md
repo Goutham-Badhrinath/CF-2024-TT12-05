@@ -9,11 +9,11 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+Its works by getting bytes from laptop and loading the instr_mem
 
 ## How to test
 
-Explain how to use your project
+type data from laptop through teraterm or python serial to load data and it will be echoed back 
 
 ## External hardware
 
