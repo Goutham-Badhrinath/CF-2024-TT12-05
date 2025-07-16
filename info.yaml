@@ -27,7 +27,7 @@ project:
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
-  ui[0]: "uart_tx"
+  ui[0]: ""
   ui[1]: "uart_rx"
   ui[2]: ""
   ui[3]: ""
@@ -37,14 +37,14 @@ pinout:
   ui[7]: ""
 
   # Outputs
-  uo[0]: "LED[0]"
-  uo[1]: "LED[1]"
-  uo[2]: "LED[2]"
-  uo[3]: "LED[3]"
-  uo[4]: "LED[4]"
-  uo[5]: "LED[5]"
-  uo[6]: "LED[6]"
-  uo[7]: "LED[7]"
+  uo[0]: "uart_tx"
+  uo[1]: "LED[0]"
+  uo[2]: "LED[1]"
+  uo[3]: "LED[2]"
+  uo[4]: "LED[3]"
+  uo[5]: ""
+  uo[6]: ""
+  uo[7]: ""
 
   # Bidirectional pins
   uio[0]: ""
