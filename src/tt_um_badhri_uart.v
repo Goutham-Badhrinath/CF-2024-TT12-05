@@ -7,15 +7,23 @@
 `default_nettype none
 
 module tt_um_badhri_uart(
-    input wire clk,          // 100MHz clock from Basys3
-    input wire uart_rx,      // UART RX from PC
-    output wire uart_tx,     // UART TX to PC
-    input  wire ena,      // always 1 when the design is powered, so you can ignore it
-    // LEDs display received byte
-    output reg [3:0] LED3,
-    input  wire rst_n     // reset_n - low to reset
+    input  wire [7:0] ui_in,    // Dedicated inputs
+    output wire [7:0] uo_out,   // Dedicated outputs
+    input  wire [7:0] uio_in,   // IOs: Input path
+    output wire [7:0] uio_out,  // IOs: Output path
+    output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
+    input  wire       ena,      // always 1 when the design is powered, so you can ignore it
+    input  wire       clk,      // clock
+    input  wire       rst_n     // reset_n - low to reset
 );
-reg [7:0] LED;
+    reg uart_rx = 0;
+    wire uart_tx = 0;
+    reg [3:0] LED3;
+    always @(*) begin
+        uart_rx = ui_in[1];
+    end
+    assign uo_out[0] = uart_tx;
+    reg [7:0] LED;
     reg [3:0] LED1,LED2,LED4;
     reg [31:0] instr_mem;
     wire [7:0] dout;
