@@ -11,7 +11,7 @@ module tt_um_badhri_uart(
     input wire uart_rx,      // UART RX from PC
     output wire uart_tx,     // UART TX to PC
     // LEDs display received byte
-    output reg [3:0] LED3,LED4
+    output reg [3:0] LED3
 );
 reg [7:0] LED;
     reg [3:0] LED1,LED2;
