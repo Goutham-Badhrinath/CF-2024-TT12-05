@@ -29,7 +29,8 @@ module tt_um_badhri_uart (
     reg [7:0] LED;
     reg [3:0] i = 0;
 
-    reg [31:0] instr_mem;
+    reg [31:0] instr_mem [0:15];
+    reg [3:0] instr_idx = 0;
     reg [7:0] din = 0;
     reg wr_en = 0;
     reg rdy_clr = 0;
@@ -62,18 +63,18 @@ module tt_um_badhri_uart (
         input [3:0] nib;
         begin
             case (i)
-                4'd0: begin instr_mem[31:28] = nib; LED1 <= nib; end
-                4'd1: instr_mem[27:24] = nib;
-                4'd2: begin instr_mem[23:20] = nib; LED2 <= nib; end
-                4'd3: instr_mem[19:16] = nib;
-                4'd4: begin instr_mem[15:12] = nib; LED3 <= nib; end
-                4'd5: instr_mem[11:8]  = nib;
-                4'd6: begin instr_mem[7:4]   = nib; LED4 <= nib; end
-                4'd7: instr_mem[3:0]   = nib;
+                4'd0: begin instr_mem[instr_idx][31:28] = nib; LED1 <= nib; end
+                4'd1: instr_mem[instr_idx][27:24] = nib;
+                4'd2: begin instr_mem[instr_idx][23:20] = nib; LED2 <= nib; end
+                4'd3: instr_mem[instr_idx][19:16] = nib;
+                4'd4: begin instr_mem[instr_idx][15:12] = nib; LED3 <= nib; end
+                4'd5: instr_mem[instr_idx][11:8]  = nib;
+                4'd6: begin instr_mem[instr_idx][7:4]   = nib; LED4 <= nib; end
+                4'd7: instr_mem[instr_idx][3:0]   = nib;
             endcase
         end
     endtask
-
+    reg k = 0;
     // UART handling + instruction memory nibble accumulation
     always @(posedge clk) begin
         rdy_clr <= 0;
@@ -85,7 +86,9 @@ module tt_um_badhri_uart (
             LED3 <= 0;
             LED4 <= 0;
             LED  <= 0;
-            i    <= 0;
+            i <= 0;
+            k <= 0;
+            instr_idx <= 0;
         end else if (rdy && !tx_busy) begin
             case (dout)
                 8'h30: assign_nibble(4'h0);
@@ -106,10 +109,16 @@ module tt_um_badhri_uart (
                 8'h46: assign_nibble(4'hF);
             endcase
 
-            if (i == 7)
+            if (i == 7 && k == 1) begin
                 i <= 0;
-            else
-                i <= i + 1;
+                k <= 0; 
+                if (instr_idx < 15)   // don’t overflow array
+                instr_idx <= instr_idx + 1; end
+            if(i < 7 && k == 1) begin
+                k <= 0;
+                i <= i + 1; end
+            if(k < 1)
+              k <= 1;
 
             LED <= dout;       // show received byte
             din <= dout;       // echo byte
@@ -117,7 +126,6 @@ module tt_um_badhri_uart (
             rdy_clr <= 1;
         end
     end
-
     // Prevent unused warnings (like in example)
     wire _unused = &{ena, ui_in[0], ui_in[7:2], uio_in};
 
