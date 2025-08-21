@@ -276,7 +276,7 @@ module tt_um_badhri_uart (
   end
 
   // ───── Hazard Detection ─────
-  always @(*) begin
+    always @(posedge clk) begin
     if ((ID_EX_IR[6:0] == 7'b0000011) &&
         (ID_EX_rd != 0) &&
         ((ID_EX_rd == IF_ID_IR[19:15]) || (ID_EX_rd == IF_ID_IR[24:20])))
