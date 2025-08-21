@@ -134,7 +134,7 @@ module tt_um_badhri_uart (
 
     // ───── Internal State ─────
   reg [31:0] PC;
-  //reg [31:0] data_mem[0:63];    // Data memory
+  reg [31:0] data_mem[0:63];    // Data memory
   reg [31:0] regfile[0:31];     // 32 general-purpose registers
   reg halt_flag;
   
