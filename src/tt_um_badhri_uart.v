@@ -64,14 +64,14 @@ module tt_um_badhri_uart (
         input [3:0] nib;
         begin
             case (i)
-                4'd0: begin instr_mem[instr_idx][31:28] = nib; LED1 <= nib; end
-                4'd1: instr_mem[instr_idx][27:24] = nib;
-                4'd2: begin instr_mem[instr_idx][23:20] = nib; LED2 <= nib; end
-                4'd3: instr_mem[instr_idx][19:16] = nib;
-                4'd4: begin instr_mem[instr_idx][15:12] = nib; LED3 <= nib; end
-                4'd5: instr_mem[instr_idx][11:8]  = nib;
-                4'd6: begin instr_mem[instr_idx][7:4]   = nib; LED4 <= nib; end
-                4'd7: instr_mem[instr_idx][3:0]   = nib;
+                4'd0: begin instr_mem[instr_idx][31:28] <= nib; LED1 <= nib; end
+                4'd1: instr_mem[instr_idx][27:24] <= nib;
+                4'd2: begin instr_mem[instr_idx][23:20] <= nib; LED2 <= nib; end
+                4'd3: instr_mem[instr_idx][19:16] <= nib;
+                4'd4: begin instr_mem[instr_idx][15:12] <= nib; LED3 <= nib; end
+                4'd5: instr_mem[instr_idx][11:8]  <= nib;
+                4'd6: begin instr_mem[instr_idx][7:4]   <= nib; LED4 <= nib; end
+                4'd7: instr_mem[instr_idx][3:0]   <= nib;
             endcase
         end
     endtask
@@ -280,9 +280,9 @@ module tt_um_badhri_uart (
     if ((ID_EX_IR[6:0] == 7'b0000011) &&
         (ID_EX_rd != 0) &&
         ((ID_EX_rd == IF_ID_IR[19:15]) || (ID_EX_rd == IF_ID_IR[24:20])))
-      stall = 1;
+      stall <= 1;
     else
-      stall = 0;
+      stall <= 0;
   end
 
 
