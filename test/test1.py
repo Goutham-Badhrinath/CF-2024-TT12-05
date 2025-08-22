@@ -74,7 +74,8 @@ async def test_project(dut):
     dut._log.info("CPU started")
 
     # Run CPU for some time
-    await Timer(10_000, units="ns")
+    await Timer(10_000_000, units="ns")
+
 
     # Dump internal state
     #dut._log.info(f"PC halted at {int(dut.user_project.PC.value)}")
