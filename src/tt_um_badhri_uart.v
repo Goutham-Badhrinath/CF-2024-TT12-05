@@ -114,7 +114,6 @@ module tt_um_badhri_uart (
             if(k < 1)
               k <= 1;
 
-            LED <= dout;       // show received byte
             din <= dout;       // echo byte
             wr_en <= 1;
             rdy_clr <= 1;
