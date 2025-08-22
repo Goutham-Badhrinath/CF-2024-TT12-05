@@ -134,8 +134,8 @@ module tt_um_badhri_uart (
 
     // ───── Internal State ─────
     reg [31:0] PC = 0;
-  reg [31:0] data_mem[0:63];    // Data memory
-    reg [31:0] regfile[0:31];     // 32 general-purpose registers
+    reg [31:0] data_mem[0:31];    // Data memory
+    reg [31:0] regfile[0:7];     // 32 general-purpose registers
   reg halt_flag = 0;
    // assign uo_out[4:1] = regfile[3][3:0];   // nibble output
    // assign uo_out[4:1] = 0;
@@ -199,8 +199,8 @@ assign uo_out[4:1] = x3;
       if (!stall) begin
         ID_EX_IR <= IF_ID_IR;
         ID_EX_PC <= IF_ID_PC;
-        ID_EX_A <= regfile[IF_ID_IR[19:15]];
-        ID_EX_B <= regfile[IF_ID_IR[24:20]];
+          ID_EX_A <= regfile[IF_ID_IR[19:15] & 3'b111];
+          ID_EX_B <= regfile[IF_ID_IR[24:20] & 3'b111];
         ID_EX_rd <= IF_ID_IR[11:7];
 
         case (IF_ID_IR[6:0])
@@ -290,9 +290,9 @@ assign uo_out[4:1] = x3;
     if (start && !halt_flag) begin
       case (MEM_WB_IR[6:0])
         7'b0110011, 7'b0010011, 7'b1101111:
-          regfile[MEM_WB_rd] <= MEM_WB_ALUOut;
+            regfile[MEM_WB_rd & 3'b111] <= MEM_WB_ALUOut;
         7'b0000011:
-          regfile[MEM_WB_rd] <= MEM_WB_LMD;
+            regfile[MEM_WB_rd & 3'b111] <= MEM_WB_LMD;
         7'b1110011:
           halt_flag <= 1; // ebreak
       endcase
