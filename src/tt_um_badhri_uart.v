@@ -126,7 +126,7 @@ module tt_um_badhri_uart (
 
     // ───── Internal State ─────
     reg [31:0] PC = 0;
-    reg [31:0] data_mem[0:7];    // Data memory
+    reg [31:0] data_mem[0:3];    // Data memory
     reg [31:0] regfile[0:5];     // 32 general-purpose registers
   reg halt_flag = 0;
    // assign uo_out[4:1] = regfile[3][3:0];   // nibble output
@@ -264,9 +264,9 @@ assign uo_out[4:1] = x3;
       MEM_WB_ALUOut <= EX_MEM_ALUOut;
 
       if (EX_MEM_IR[6:0] == 7'b0000011) // lw
-          MEM_WB_LMD <= data_mem[(EX_MEM_ALUOut >> 2) & 3'b111];
+          MEM_WB_LMD <= data_mem[(EX_MEM_ALUOut >> 2) & 2'b11];
       else if (EX_MEM_IR[6:0] == 7'b0100011) // sw
-          data_mem[(EX_MEM_ALUOut >> 2) & 3'b111] <= EX_MEM_B;
+          data_mem[(EX_MEM_ALUOut >> 2) & 2'b11] <= EX_MEM_B;
     end
   end
 
