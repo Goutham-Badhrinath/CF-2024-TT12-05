@@ -42,7 +42,8 @@ jobs:
         uses: TinyTapeout/tt-gds-action/gl_test@ttsky25a
         with:
           pdk: sky130
-        env: COCOTB_RESOLVE_X: ZERO
+        env: 
+          COCOTB_RESOLVE_X: ZERO
   viewer:
     needs: gds
     runs-on: ubuntu-24.04
