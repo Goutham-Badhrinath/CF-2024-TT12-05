@@ -24,11 +24,12 @@ async def uart_send_byte(dut, byte: int):
     await Timer(BAUD_PERIOD_NS, units="ns")
 
 
-async def uart_send_word(dut, word: int):
-    """Send 64-bit word as 8 bytes MSB first."""
-    for shift in range(56, -1, -8):
-        byte = (word >> shift) & 0xFF
-        await uart_send_byte(dut, byte)
+async def uart_send_word(dut, hexstr: str):
+    """Send 8 ASCII characters as UART bytes."""
+    assert len(hexstr) == 8, "Instruction must be 8 hex chars"
+    for ch in hexstr:
+        await uart_send_byte(dut, ord(ch))
+
 
 
 @cocotb.test()
@@ -51,19 +52,19 @@ async def test_project(dut):
     dut._log.info("Sending instructions via UART")
 
     # Instruction sequence (as in your Verilog TB)
-    await uart_send_word(dut, 0x00500093)  # addi x1, x0, 5
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00700113)  # addi x2, x0, 7
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x002081B3)  # add x3, x1, x2
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00000013)  # nop
-    await uart_send_word(dut, 0x00100073)  # ebreak
+    await uart_send_word(dut, "00500093")  # addi x1, x0, 5
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00700113")  # addi x2, x0, 7
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "002081B3")  # add x3, x1, x2
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00000013")  # nop
+    await uart_send_word(dut, "00100073")  # ebreak
 
     # Allow time for UART + CPU processing
     await Timer(100_000, units="ns")
