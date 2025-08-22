@@ -137,8 +137,8 @@ module tt_um_badhri_uart (
   reg [31:0] data_mem[0:63];    // Data memory
     reg [31:0] regfile[0:31];     // 32 general-purpose registers
   reg halt_flag = 0;
-    assign uo_out[4:1] = regfile[3][3:0];   // nibble output
-  
+   // assign uo_out[4:1] = regfile[3][3:0];   // nibble output
+    assign uo_out[4:1] = 0;
   // ───── Pipeline Registers ─────
   reg [31:0] IF_ID_IR, IF_ID_PC;
   reg [31:0] ID_EX_IR, ID_EX_PC, ID_EX_A, ID_EX_B, ID_EX_Imm;
