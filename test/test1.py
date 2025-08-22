@@ -77,7 +77,7 @@ async def test_project(dut):
     await Timer(10_000, units="ns")
 
     # Dump internal state
-    dut._log.info(f"PC halted at {int(dut.user_project.PC.value)}")
+    #dut._log.info(f"PC halted at {int(dut.user_project.PC.value)}")
     dut._log.info(f"x1 = {int(dut.user_project.regfile[1].value)}")
     dut._log.info(f"x2 = {int(dut.user_project.regfile[2].value)}")
     dut._log.info(f"x3 = {int(dut.user_project.regfile[3].value)} (sum)")
