@@ -43,7 +43,7 @@ jobs:
         with:
           pdk: sky130
         env: 
-          COCOTB_RESOLVE_X: "0"
+          COCOTB_RESOLVE_X: "ZEROS"
   viewer:
     needs: gds
     runs-on: ubuntu-24.04
