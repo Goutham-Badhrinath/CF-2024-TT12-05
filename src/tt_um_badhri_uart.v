@@ -165,7 +165,10 @@ module tt_um_badhri_uart (
     else if (!stall) begin
       IF_ID_IR <= instr_mem[PC >> 2];
       IF_ID_PC <= PC;
-      PC <= PC + 4;
+       if (EX_MEM_cond)  // branch taken
+          PC <= EX_MEM_ALUOut;
+      else
+          PC <= PC + 4;
     end
   end
 
