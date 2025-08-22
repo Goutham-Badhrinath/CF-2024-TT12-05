@@ -133,10 +133,10 @@ module tt_um_badhri_uart (
     //////////////////////////////////////////////////
 
     // ───── Internal State ─────
-  reg [31:0] PC;
+    reg [31:0] PC = 0;
   reg [31:0] data_mem[0:63];    // Data memory
-  reg [31:0] regfile[0:31];     // 32 general-purpose registers
-  reg halt_flag;
+    reg [31:0] regfile[0:31] = 0;     // 32 general-purpose registers
+  reg halt_flag = 0;
   
   // ───── Pipeline Registers ─────
   reg [31:0] IF_ID_IR, IF_ID_PC;
@@ -151,12 +151,12 @@ module tt_um_badhri_uart (
   reg stall;
 
   // ───── Register Initialization ─────
-  integer a;
-  always@(negedge rst_n) begin
-    PC <= 0;
-    halt_flag <= 0;
-    for (a = 0; a < 32; a = a + 1) regfile[a] <= 0;
-  end
+  // integer a;
+  // initial begin
+  //   PC = 0;
+  //   halt_flag = 0;
+  //   for (a = 0; a < 32; a = a + 1) regfile[a] = 0;
+  // end
 
   // ───── IF Stage ─────
   always @(posedge clk) begin
