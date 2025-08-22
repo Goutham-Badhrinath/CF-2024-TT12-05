@@ -76,12 +76,12 @@ async def test_project(dut):
     await Timer(10_000, units="ns")
 
     # Dump internal state
-    dut._log.info(f"PC halted at {int(dut.PC.value)}")
-    dut._log.info(f"x1 = {int(dut.regfile[1].value)}")
-    dut._log.info(f"x2 = {int(dut.regfile[2].value)}")
-    dut._log.info(f"x3 = {int(dut.regfile[3].value)} (sum)")
+    dut._log.info(f"PC halted at {int(dut.PC.user_project.value)}")
+    dut._log.info(f"x1 = {int(dut.regfile[1].user_project.value)}")
+    dut._log.info(f"x2 = {int(dut.regfile[2].user_project.value)}")
+    dut._log.info(f"x3 = {int(dut.regfile[3].user_project.value)} (sum)")
 
     # Self-check
-    assert int(dut.regfile[1].value) == 5, "x1 should be 5"
-    assert int(dut.regfile[2].value) == 7, "x2 should be 7"
-    assert int(dut.regfile[3].value) == 12, "x3 should be 12"
+    assert int(dut.regfile[1].user_project.value) == 5, "x1 should be 5"
+    assert int(dut.regfile[2].user_project.value) == 7, "x2 should be 7"
+    assert int(dut.regfile[3].user_project.value) == 12, "x3 should be 12"
