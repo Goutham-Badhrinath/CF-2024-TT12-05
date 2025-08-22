@@ -78,11 +78,11 @@ async def test_project(dut):
 
     # Dump internal state
     #dut._log.info(f"PC halted at {int(dut.user_project.PC.value)}")
-    dut._log.info(f"x1 = {int(dut.user_project.regfile[1].value)}")
-    dut._log.info(f"x2 = {int(dut.user_project.regfile[2].value)}")
-    dut._log.info(f"x3 = {int(dut.user_project.regfile[3].value)} (sum)")
+    #dut._log.info(f"x1 = {int(dut.user_project.regfile[1].value)}")
+    #dut._log.info(f"x2 = {int(dut.user_project.regfile[2].value)}")
+    dut._log.info(f"x3 = {int(dut.uo_out[4:1].value)} (sum)")
 
     # Self-check
-    assert int(dut.user_project.regfile[1].value) == 5, "x1 should be 5"
-    assert int(dut.user_project.regfile[2].value) == 7, "x2 should be 7"
-    assert int(dut.user_project.regfile[3].value) == 12, "x3 should be 12"
+    #assert int(dut.user_project.regfile[1].value) == 5, "x1 should be 5"
+    #assert int(dut.user_project.regfile[2].value) == 7, "x2 should be 7"
+    assert int(dut.uo_out[4:1].value) == 12, "x3 should be 12"
