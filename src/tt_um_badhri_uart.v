@@ -56,7 +56,7 @@ module tt_um_badhri_uart (
 
     // LED output through uo_out
     assign uo_out[0] = uart_tx;
-    assign uo_out[4:1] = LED3;   // nibble output
+    
     assign uo_out[7:5] = 3'b0;
 
     // Task converted to functionally equivalent block — task `=` used
@@ -137,6 +137,7 @@ module tt_um_badhri_uart (
   reg [31:0] data_mem[0:63];    // Data memory
     reg [31:0] regfile[0:31];     // 32 general-purpose registers
   reg halt_flag = 0;
+    assign uo_out[4:1] = regfile[3][3:0];   // nibble output
   
   // ───── Pipeline Registers ─────
   reg [31:0] IF_ID_IR, IF_ID_PC;
