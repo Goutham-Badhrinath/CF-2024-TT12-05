@@ -44,6 +44,12 @@ jobs:
           pdk: sky130
         env: 
           COCOTB_RESOLVE_X: "ZEROS"
+      - name: Upload VCD
+        uses: actions/upload-artifact@v4
+        with:
+          name: tb1-vcd
+          path: test/tb1.vcd
+
   viewer:
     needs: gds
     runs-on: ubuntu-24.04
