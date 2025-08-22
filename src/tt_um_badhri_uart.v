@@ -131,21 +131,14 @@ module tt_um_badhri_uart (
   reg halt_flag = 0;
    // assign uo_out[4:1] = regfile[3][3:0];   // nibble output
    // assign uo_out[4:1] = 0;
-    // Shadow register to capture x3[3:0]
-    reg [31:0] x3_debug = 0;
+    // Shadow register to capture x3[3:0
     reg [3:0] x3 = 0;
-always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-        x3_debug <= 4'b0;
-    end else begin
-        x3_debug <= regfile[3];  // copy low bits of x3 every cycle
-    end
-end
+
 always @(posedge clk) begin
     if (!rst_n) begin
         x3 <= 4'b0;
     end else begin
-        x3 <= x3_debug[3:0];  // copy low bits of x3 every cycle
+        x3 <= regfile[3][3:0];  // copy low bits of x3 every cycle
     end
 end
 // Drive to output pins
@@ -168,7 +161,7 @@ assign uo_out[4:1] = x3;
    initial begin
   //   PC = 0;
   //   halt_flag = 0;
-     for (a = 0; a < 32; a = a + 1) regfile[a] = 0;
+       for (a = 0; a < 6; a = a + 1) regfile[a] = 0;
    end
 
   // ───── IF Stage ─────
