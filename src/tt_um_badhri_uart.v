@@ -25,9 +25,7 @@ module tt_um_badhri_uart (
     wire start = ui_in[0]; // start CPU
     wire uart_tx;
 
-    // LEDs and state
-    reg [3:0] LED1, LED2, LED3, LED4;
-    reg [7:0] LED;
+    
     reg [3:0] i = 0;
 
     reg [31:0] instr_mem [0:15];
@@ -64,13 +62,13 @@ module tt_um_badhri_uart (
         input [3:0] nib;
         begin
             case (i)
-                4'd0: begin instr_mem[instr_idx][31:28] <= nib; LED1 <= nib; end
+                4'd0: begin instr_mem[instr_idx][31:28] <= nib;  end
                 4'd1: instr_mem[instr_idx][27:24] <= nib;
-                4'd2: begin instr_mem[instr_idx][23:20] <= nib; LED2 <= nib; end
+                4'd2: begin instr_mem[instr_idx][23:20] <= nib;  end
                 4'd3: instr_mem[instr_idx][19:16] <= nib;
-                4'd4: begin instr_mem[instr_idx][15:12] <= nib; LED3 <= nib; end
+                4'd4: begin instr_mem[instr_idx][15:12] <= nib;  end
                 4'd5: instr_mem[instr_idx][11:8]  <= nib;
-                4'd6: begin instr_mem[instr_idx][7:4]   <= nib; LED4 <= nib; end
+                4'd6: begin instr_mem[instr_idx][7:4]   <= nib;  end
                 4'd7: instr_mem[instr_idx][3:0]   <= nib;
             endcase
         end
@@ -82,11 +80,6 @@ module tt_um_badhri_uart (
         wr_en <= 0;
 
         if (!rst_n) begin
-            LED1 <= 0;
-            LED2 <= 0;
-            LED3 <= 0;
-            LED4 <= 0;
-            LED  <= 0;
             i <= 0;
             k <= 0;
             instr_idx <= 0;
