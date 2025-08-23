@@ -93,7 +93,7 @@ async def test_project(dut):
     #dut._log.info(f"PC halted at {int(dut.user_project.PC.value)}")
     #dut._log.info(f"x1 = {int(dut.user_project.regfile[1].value)}")
     #dut._log.info(f"x2 = {int(dut.user_project.regfile[2].value)}")
-    uio_val = int(dut.uio_out.value)   # converts whole bus to Python int
+    x3 = int(dut.uio_out.value)   # converts whole bus to Python int
     dut._log.info(f"x3 = {x3} (sum)")
 
 
