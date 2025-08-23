@@ -3,24 +3,29 @@ module receiver(input wire rx,
 		output reg rdy,
 		input wire rdy_clr,
 		input wire clk_50m,
+		input wire rst,
 		input wire clken,
 		output reg [7:0] data);
 
-initial begin
-	rdy = 0;
-	data = 8'b0;
-end
 
 parameter RX_STATE_START	= 2'b00;
 parameter RX_STATE_DATA		= 2'b01;
 parameter RX_STATE_STOP		= 2'b10;
 
-reg [1:0] state = RX_STATE_START;
-reg [3:0] sample = 0;
-reg [3:0] bitpos = 0;
-reg [7:0] scratch = 8'b0;
+reg [1:0] state;
+reg [3:0] sample;
+reg [3:0] bitpos;
+reg [7:0] scratch;
 
 always @(posedge clk_50m) begin
+	if(!rst) begin
+		state <= 2'b00;
+		sample <= 3'b000;
+		bitpos <= 3'b000;
+		scratch <= 8'b0;
+		rdy <= 0;
+	    data <= 8'b0;
+	end
 	if (rdy_clr)
 		rdy <= 0;
 
