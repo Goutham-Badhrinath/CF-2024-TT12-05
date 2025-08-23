@@ -45,7 +45,6 @@ async def test_project(dut):
     #dut.ena.value = 1
     dut.ui_in.value = 0b10
     dut.uio_in.value = 0
-    dut.uo_out.value = 0   # <-- force all 8 bits to 0 at start
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1
@@ -94,8 +93,7 @@ async def test_project(dut):
     #dut._log.info(f"PC halted at {int(dut.user_project.PC.value)}")
     #dut._log.info(f"x1 = {int(dut.user_project.regfile[1].value)}")
     #dut._log.info(f"x2 = {int(dut.user_project.regfile[2].value)}")
-    uo_val = int(dut.uo_out.value)   # converts whole bus to Python int
-    x3 = (uo_val >> 1) & 0b1111      # shifts + masks → result is also int
+    uio_val = int(dut.uio_out.value)   # converts whole bus to Python int
     dut._log.info(f"x3 = {x3} (sum)")
 
 
