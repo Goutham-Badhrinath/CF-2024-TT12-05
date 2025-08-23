@@ -1,9 +1,9 @@
 //`timescale 1ns/1ps
 module uart(input wire [7:0] din,
 	    input wire wr_en,
+		input wire rst,
 	    input wire clk_50m,
 	    output wire tx,
-	    input wire rst,
 	    output wire tx_busy,
 	    input wire rx,
 	    output wire rdy,
@@ -20,12 +20,14 @@ transmitter uart_tx(.din(din),
 		    .clk_50m(clk_50m),
 		    .clken(txclk_en),
 		    .tx(tx),
-		    .tx_busy(tx_busy));
+		    .tx_busy(tx_busy),
+			.rst(rst));
 receiver uart_rx(.rx(rx),
 		 .rdy(rdy),
 		 .rdy_clr(rdy_clr),
 		 .clk_50m(clk_50m),
 		 .clken(rxclk_en),
-		 .data(dout));
+		 .data(dout),
+		 .rst(rst));
 
 endmodule
