@@ -129,7 +129,7 @@ module tt_um_badhri_uart (
 
     always @(posedge clk) begin
         if (!rst_n || !start) begin
-        x3 <= 7'b0;
+        x3 <= 8'b0;
     end else begin
         x3 <= regfile[3][7:0];
     end
