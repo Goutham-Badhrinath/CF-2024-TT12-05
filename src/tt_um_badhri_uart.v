@@ -52,10 +52,6 @@ module tt_um_badhri_uart (
         .dout(dout)
     );
 
-    // LED output through uo_out
-    assign uo_out[0] = uart_tx;
-    
-    assign uo_out[7:5] = 3'b0;
 
     // Task converted to functionally equivalent block — task `=` used
     task automatic assign_nibble;
@@ -134,15 +130,22 @@ module tt_um_badhri_uart (
     reg halt_flag;
     reg [3:0] x3;
 
-always @(posedge clk) begin
-    if (!rst_n || !start) begin
+reg uart_tx_reg;  // registered version of uart_tx
+
+    always @(posedge clk or posedge rst_n) begin
+    if (!rst_n) begin
         x3 <= 4'b0;
+        uart_tx_reg <= 1'b0;   // <-- initialize TX line
     end else begin
-        x3 <= regfile[3][3:0];  // copy low bits of x3 every cycle
+        x3 <= regfile[3][3:0];
+        uart_tx_reg <= uart_tx;  // capture your UART logic output
     end
 end
+
 // Drive to output pins
 assign uo_out[4:1] = x3;
+assign uo_out[0]   = uart_tx_reg;
+assign uo_out[7:5] = 3'b000;
 
   // ───── Pipeline Registers ─────
   reg [31:0] IF_ID_IR, IF_ID_PC;
