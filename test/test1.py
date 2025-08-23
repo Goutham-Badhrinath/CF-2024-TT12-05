@@ -45,6 +45,7 @@ async def test_project(dut):
     #dut.ena.value = 1
     dut.ui_in.value = 0b10
     dut.uio_in.value = 0
+    dut.uo_out.value = 0   # <-- force all 8 bits to 0 at start
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1
