@@ -26,13 +26,13 @@ module tt_um_badhri_uart (
     wire uart_tx;
 
     
-    reg [3:0] i = 0;
+    reg [3:0] i;
 
     reg [31:0] instr_mem [0:15];
-    reg [3:0] instr_idx = 0;
+    reg [3:0] instr_idx;
     reg [7:0] din = 0;
-    reg wr_en = 0;
-    reg rdy_clr = 0;
+    reg wr_en;
+    reg rdy_clr;
 
     wire [7:0] dout;
     wire rdy;
@@ -70,10 +70,11 @@ module tt_um_badhri_uart (
                 4'd5: instr_mem[instr_idx][11:8]  <= nib;
                 4'd6: begin instr_mem[instr_idx][7:4]   <= nib;  end
                 4'd7: instr_mem[instr_idx][3:0]   <= nib;
+                default : instr_mem[instr_idx] <= 0;
             endcase
         end
     endtask
-    reg k = 0;
+    reg k;
     // UART handling + instruction memory nibble accumulation
     always @(posedge clk) begin
         rdy_clr <= 0;
@@ -122,20 +123,19 @@ module tt_um_badhri_uart (
 
     //////////////////////////////////////////////////
                 // Goutham CPU works here // 
+                // Progress : Init Done, 
+                // still if possible pipeline guards for gl_test
     //////////////////////////////////////////////////
 
     // ───── Internal State ─────
-    reg [31:0] PC = 0;
+    reg [31:0] PC;
     reg [31:0] data_mem[0:3];    // Data memory
-    reg [31:0] regfile[0:5];     // 32 general-purpose registers
-  reg halt_flag = 0;
-   // assign uo_out[4:1] = regfile[3][3:0];   // nibble output
-   // assign uo_out[4:1] = 0;
-    // Shadow register to capture x3[3:0
-    reg [3:0] x3 = 0;
+    reg [31:0] regfile[0:7];     // 32 general-purpose registers
+    reg halt_flag;
+    reg [3:0] x3;
 
 always @(posedge clk) begin
-    if (!rst_n) begin
+    if (!rst_n || !start) begin
         x3 <= 4'b0;
     end else begin
         x3 <= regfile[3][3:0];  // copy low bits of x3 every cycle
@@ -156,14 +156,6 @@ assign uo_out[4:1] = x3;
 
   reg stall;
 
-  // ───── Register Initialization ─────
-   integer a;
-   initial begin
-  //   PC = 0;
-  //   halt_flag = 0;
-       for (a = 0; a < 6; a = a + 1) regfile[a] = 0;
-   end
-
   // ───── IF Stage ─────
   always @(posedge clk) begin
     if (!start || halt_flag)
@@ -176,6 +168,11 @@ assign uo_out[4:1] = x3;
       else
           PC <= PC + 4;
     end
+    else if (!start) begin
+        IF_ID_IR <= 0;
+        IF_ID_PC <= 0;
+        PC <= 0;
+    end
   end
 
   // ───── ID Stage ─────
@@ -184,8 +181,8 @@ assign uo_out[4:1] = x3;
       if (!stall) begin
         ID_EX_IR <= IF_ID_IR;
         ID_EX_PC <= IF_ID_PC;
-          ID_EX_A <= regfile[IF_ID_IR[19:15] & 3'b111];
-          ID_EX_B <= regfile[IF_ID_IR[24:20] & 3'b111];
+        ID_EX_A <= regfile[IF_ID_IR[19:15] & 3'b111];
+        ID_EX_B <= regfile[IF_ID_IR[24:20] & 3'b111];
         ID_EX_rd <= IF_ID_IR[11:7];
 
         case (IF_ID_IR[6:0])
@@ -204,6 +201,14 @@ assign uo_out[4:1] = x3;
       end else begin
         ID_EX_IR <= 32'b0; // Insert NOP on stall
       end
+    end
+    else if (!start) begin
+        ID_EX_IR <= 0;
+        ID_EX_PC <= 0;
+        ID_EX_A <= 0;
+        ID_EX_B <= 0;
+        ID_EX_rd <= 0;
+        ID_EX_Imm <= 0;
     end
   end
 
@@ -254,6 +259,13 @@ assign uo_out[4:1] = x3;
         default: EX_MEM_ALUOut <= 0;
       endcase
     end
+    else if (!start) begin
+        EX_MEM_IR <= 0;
+        EX_MEM_B <= 0;
+        EX_MEM_rd <= 0;
+        EX_MEM_cond <= 0;
+        EX_MEM_ALUOut <= 0;
+    end
   end
 
   // ───── MEM Stage ─────
@@ -268,6 +280,16 @@ assign uo_out[4:1] = x3;
       else if (EX_MEM_IR[6:0] == 7'b0100011) // sw
           data_mem[(EX_MEM_ALUOut >> 2) & 2'b11] <= EX_MEM_B;
     end
+    else if (!start) begin
+        MEM_WB_IR <= 0;
+        MEM_WB_rd <= 0;
+        MEM_WB_ALUOut <= 0;
+        MEM_WB_LMD <= 0; 
+        data_mem[0] <= 0;
+        data_mem[1] <= 0;
+        data_mem[2] <= 0;
+        data_mem[3] <= 0;
+    end
   end
 
   // ───── WB Stage ─────
@@ -281,6 +303,17 @@ assign uo_out[4:1] = x3;
         7'b1110011:
           halt_flag <= 1; // ebreak
       endcase
+    end
+    else if (!start) begin
+        regfile[0] <= 0;
+        regfile[1] <= 0;
+        regfile[2] <= 0;
+        regfile[3] <= 0;
+        regfile[4] <= 0;
+        regfile[5] <= 0;
+        regfile[6] <= 0;
+        regfile[7] <= 0;
+        halt_flag <= 0;
     end
   end
 
