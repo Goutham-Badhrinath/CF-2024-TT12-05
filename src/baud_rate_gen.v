@@ -2,7 +2,7 @@
  * baud rate generator to divide a 50MHz clock into a 115200 baud
  * rx/tx pair where the rx clcken oversamples by 16x.
  */
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 module baud_rate_gen(input wire clk_50m,
 		     output wire rxclk_en,
 		     output wire txclk_en);
