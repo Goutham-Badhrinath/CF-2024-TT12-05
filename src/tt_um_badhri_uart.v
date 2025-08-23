@@ -127,7 +127,7 @@ module tt_um_badhri_uart (
     reg [7:0] x3;
     assign uio_oe = 8'b11111111; // enable all to outputs
 
-    always @(posedge clk or posedge rst_n) begin
+    always @(posedge clk) begin
         if (!rst_n || !start) begin
         x3 <= 8'b00000000;
     end else begin
