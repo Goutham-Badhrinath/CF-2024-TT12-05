@@ -20,11 +20,11 @@ reg [7:0] scratch;
 always @(posedge clk_50m) begin
 	if(!rst) begin
 		state <= 2'b00;
-		sample <= 3'b000;
-		bitpos <= 3'b000;
-		scratch <= 8'b0;
+		sample <= 4'b0000;
+		bitpos <= 4'b0000;
+		scratch <= 8'h00;
 		rdy <= 0;
-	    data <= 8'b0;
+	    data <= 8'h00;
 	end
 	if (rdy_clr)
 		rdy <= 0;
