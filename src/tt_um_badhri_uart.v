@@ -290,17 +290,7 @@ end
 
   // ───── WB Stage ─────
   always @(posedge clk) begin
-    if (start && !halt_flag) begin
-      case (MEM_WB_IR[6:0])
-        7'b0110011, 7'b0010011, 7'b1101111:
-            regfile[MEM_WB_rd[2:0]] <= MEM_WB_ALUOut;
-        7'b0000011:
-            regfile[MEM_WB_rd[2:0]] <= MEM_WB_LMD;
-        7'b1110011:
-          halt_flag <= 1; // ebreak
-      endcase
-    end
-    else if (!start) begin
+    if (!start) begin
         regfile[0] <= 0;
         regfile[1] <= 0;
         regfile[2] <= 0;
@@ -310,6 +300,16 @@ end
         regfile[6] <= 0;
         regfile[7] <= 0;
         halt_flag <= 0;
+    end  
+    else if (start && !halt_flag) begin
+      case (MEM_WB_IR[6:0])
+        7'b0110011, 7'b0010011, 7'b1101111:
+            regfile[MEM_WB_rd[2:0]] <= MEM_WB_ALUOut;
+        7'b0000011:
+            regfile[MEM_WB_rd[2:0]] <= MEM_WB_LMD;
+        7'b1110011:
+          halt_flag <= 1; // ebreak
+      endcase
     end
   end
 
