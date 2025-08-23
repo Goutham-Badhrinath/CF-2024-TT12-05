@@ -53,28 +53,40 @@ async def test_project(dut):
 
     # Instruction sequence (as in your Verilog TB)
     await uart_send_word(dut, "00500093")  # addi x1, x0, 5
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00700113")  # addi x2, x0, 7
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "002081B3")  # add x3, x1, x2
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00000013")  # nop
+    await Timer(1000, units="ns")
     await uart_send_word(dut, "00100073")  # ebreak
 
     # Allow time for UART + CPU processing
-    await Timer(100_000, units="ns")
+    await Timer(1000, units="ns")
 
     # Start CPU
     dut.ui_in.value = dut.ui_in.value | 0b1  # set bit[0] = 1
     dut._log.info("CPU started")
 
     # Run CPU for some time
-    await Timer(10_000_000, units="ns")
+    await Timer(100000, units="ns")
 
 
     # Dump internal state
