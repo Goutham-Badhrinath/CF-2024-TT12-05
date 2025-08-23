@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 module transmitter(input wire [7:0] din,
 		   input wire wr_en,
 		   input wire clk_50m,
