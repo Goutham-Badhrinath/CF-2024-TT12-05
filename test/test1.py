@@ -42,8 +42,8 @@ async def test_project(dut):
 
     # Reset
     dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0b10  # idle UART line high on bit[1]
+    #dut.ena.value = 1
+    dut.ui_in.value = dut.ui_in.value & ~0b1
     dut.uio_in.value = 0
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 5)
