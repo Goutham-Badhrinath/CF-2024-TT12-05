@@ -154,8 +154,10 @@ end
 
   // ───── IF Stage ─────
   always @(posedge clk) begin
-    if (!start || halt_flag)
+      if (!start || halt_flag) begin
       PC <= 0;
+      IF_ID_IR <= 0;
+      IF_ID_PC <= 0; end
     else if (!stall) begin
       IF_ID_IR <= instr_mem[PC >> 2];
       IF_ID_PC <= PC;
@@ -164,16 +166,19 @@ end
       else
           PC <= PC + 4;
     end
-    else if (!start) begin
-        IF_ID_IR <= 0;
-        IF_ID_PC <= 0;
-        PC <= 0;
-    end
   end
 
   // ───── ID Stage ─────
   always @(posedge clk) begin
-    if (start && !halt_flag) begin
+    if (!start) begin
+        ID_EX_IR <= 0;
+        ID_EX_PC <= 0;
+        ID_EX_A <= 0;
+        ID_EX_B <= 0;
+        ID_EX_rd <= 0;
+        ID_EX_Imm <= 0;
+    end  
+    else if (start && !halt_flag) begin
       if (!stall) begin
         ID_EX_IR <= IF_ID_IR;
         ID_EX_PC <= IF_ID_PC;
@@ -198,19 +203,18 @@ end
         ID_EX_IR <= 32'b0; // Insert NOP on stall
       end
     end
-    else if (!start) begin
-        ID_EX_IR <= 0;
-        ID_EX_PC <= 0;
-        ID_EX_A <= 0;
-        ID_EX_B <= 0;
-        ID_EX_rd <= 0;
-        ID_EX_Imm <= 0;
-    end
   end
 
   // ───── EX Stage ─────
   always @(posedge clk) begin
-    if (start && !halt_flag) begin
+    if (!start) begin
+        EX_MEM_IR <= 0;
+        EX_MEM_B <= 0;
+        EX_MEM_rd <= 0;
+        EX_MEM_cond <= 0;
+        EX_MEM_ALUOut <= 0;
+    end
+    else if (start && !halt_flag) begin
       EX_MEM_IR <= ID_EX_IR;
       EX_MEM_B <= ID_EX_B;
       EX_MEM_rd <= ID_EX_rd;
@@ -255,28 +259,11 @@ end
         default: EX_MEM_ALUOut <= 0;
       endcase
     end
-    else if (!start) begin
-        EX_MEM_IR <= 0;
-        EX_MEM_B <= 0;
-        EX_MEM_rd <= 0;
-        EX_MEM_cond <= 0;
-        EX_MEM_ALUOut <= 0;
-    end
   end
 
   // ───── MEM Stage ─────
   always @(posedge clk) begin
-    if (start && !halt_flag) begin
-      MEM_WB_IR <= EX_MEM_IR;
-      MEM_WB_rd <= EX_MEM_rd;
-      MEM_WB_ALUOut <= EX_MEM_ALUOut;
-
-      if (EX_MEM_IR[6:0] == 7'b0000011) // lw
-          MEM_WB_LMD <= data_mem[EX_MEM_ALUOut[1:0]];
-      else if (EX_MEM_IR[6:0] == 7'b0100011) // sw
-          data_mem[EX_MEM_ALUOut[1:0]] <= EX_MEM_B;
-    end
-    else if (!start) begin
+    if (!start) begin
         MEM_WB_IR <= 0;
         MEM_WB_rd <= 0;
         MEM_WB_ALUOut <= 0;
@@ -285,6 +272,16 @@ end
         data_mem[1] <= 0;
         data_mem[2] <= 0;
         data_mem[3] <= 0;
+    end  
+    else if (start && !halt_flag) begin
+      MEM_WB_IR <= EX_MEM_IR;
+      MEM_WB_rd <= EX_MEM_rd;
+      MEM_WB_ALUOut <= EX_MEM_ALUOut;
+
+      if (EX_MEM_IR[6:0] == 7'b0000011) // lw
+          MEM_WB_LMD <= data_mem[EX_MEM_ALUOut[1:0]];
+      else if (EX_MEM_IR[6:0] == 7'b0100011) // sw
+          data_mem[EX_MEM_ALUOut[1:0]] <= EX_MEM_B;
     end
   end
 
