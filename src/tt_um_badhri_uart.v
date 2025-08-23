@@ -17,10 +17,6 @@ module tt_um_badhri_uart (
     input  wire   rst_n
 );
 
-    // IOs
-    assign uio_out = 8'b0;
-    assign uio_oe  = 8'b0;
-
     wire uart_rx = ui_in[1];  // properly connect to input bit
     wire start = ui_in[0]; // start CPU
     wire uart_tx;
@@ -128,24 +124,21 @@ module tt_um_badhri_uart (
     reg [31:0] data_mem[0:3];    // Data memory
     reg [31:0] regfile[0:7];     // 32 general-purpose registers
     reg halt_flag;
-    reg [3:0] x3;
+    reg [7:0] x3;
+    assign uio_oe = 8'b11111111; // enable all to outputs
 
-reg uart_tx_reg;  // registered version of uart_tx
-
-    always @(posedge clk or posedge rst_n) begin
-    if (!rst_n) begin
-        x3 <= 4'b0;
-        uart_tx_reg <= 1'b0;   // <-- initialize TX line
+    always @(posedge clk) begin
+        if (!rst_n || !start) begin
+        x3 <= 7'b0;
     end else begin
-        x3 <= regfile[3][3:0];
-        uart_tx_reg <= uart_tx;  // capture your UART logic output
+        x3 <= regfile[3][7:0];
     end
 end
 
 // Drive to output pins
-assign uo_out[4:1] = x3;
-assign uo_out[0]   = uart_tx_reg;
-assign uo_out[7:5] = 3'b000;
+    assign uio_out[7:0] = x3;
+    assign uo_out[0]   = uart_tx;
+    assign uo_out[7:1] = 7'b000000;
 
   // ───── Pipeline Registers ─────
   reg [31:0] IF_ID_IR, IF_ID_PC;
