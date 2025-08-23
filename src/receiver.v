@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 module receiver(input wire rx,
 		output reg rdy,
 		input wire rdy_clr,
