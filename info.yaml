@@ -38,23 +38,23 @@ pinout:
 
   # Outputs
   uo[0]: "uart_tx"
-  uo[1]: "x3[0]"
-  uo[2]: "x3[1]"
-  uo[3]: "x3[2]"
-  uo[4]: "x3[3]"
+  uo[1]: ""
+  uo[2]: ""
+  uo[3]: ""
+  uo[4]: ""
   uo[5]: ""
   uo[6]: ""
   uo[7]: ""
 
   # Bidirectional pins
-  uio[0]: ""
-  uio[1]: ""
-  uio[2]: ""
-  uio[3]: ""
-  uio[4]: ""
-  uio[5]: ""
-  uio[6]: ""
-  uio[7]: ""
+  uio[0]: "x3[0]"
+  uio[1]: "x3[1]"
+  uio[2]: "x3[2]"
+  uio[3]: "x3[3]"
+  uio[4]: "x3[4]"
+  uio[5]: "x3[5]"
+  uio[6]: "x3[6]"
+  uio[7]: "x3[7]"
 
 # Do not change!
 yaml_version: 6
