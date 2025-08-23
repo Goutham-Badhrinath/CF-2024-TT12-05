@@ -42,8 +42,6 @@ jobs:
         uses: TinyTapeout/tt-gds-action/gl_test@ttsky25a
         with:
           pdk: sky130
-        env: 
-          COCOTB_RESOLVE_X: "ZEROS"
       - name: Upload VCD
         uses: actions/upload-artifact@v4
         with:
