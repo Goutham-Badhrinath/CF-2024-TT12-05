@@ -127,9 +127,9 @@ module tt_um_badhri_uart (
     reg [7:0] x3;
     assign uio_oe = 8'b11111111; // enable all to outputs
 
-    always @(posedge clk) begin
+    always @(posedge clk or posedge rst_n) begin
         if (!rst_n || !start) begin
-        x3 <= 8'b0;
+        x3 <= 8'b00000000;
     end else begin
         x3 <= regfile[3][7:0];
     end
@@ -138,7 +138,7 @@ end
 // Drive to output pins
     assign uio_out[7:0] = x3;
     assign uo_out[0]   = uart_tx;
-    assign uo_out[7:1] = 7'b000000;
+    assign uo_out[7:1] = 7'b0000000;
 
   // ───── Pipeline Registers ─────
   reg [31:0] IF_ID_IR, IF_ID_PC;
