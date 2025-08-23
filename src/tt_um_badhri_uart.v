@@ -181,8 +181,8 @@ assign uo_out[4:1] = x3;
       if (!stall) begin
         ID_EX_IR <= IF_ID_IR;
         ID_EX_PC <= IF_ID_PC;
-        ID_EX_A <= regfile[IF_ID_IR[19:15] & 3'b111];
-        ID_EX_B <= regfile[IF_ID_IR[24:20] & 3'b111];
+          ID_EX_A <= regfile[IF_ID_IR[17:15]];
+          ID_EX_B <= regfile[IF_ID_IR[22:20]];
         ID_EX_rd <= IF_ID_IR[11:7];
 
         case (IF_ID_IR[6:0])
@@ -276,9 +276,9 @@ assign uo_out[4:1] = x3;
       MEM_WB_ALUOut <= EX_MEM_ALUOut;
 
       if (EX_MEM_IR[6:0] == 7'b0000011) // lw
-          MEM_WB_LMD <= data_mem[(EX_MEM_ALUOut >> 2) & 2'b11];
+          MEM_WB_LMD <= data_mem[(EX_MEM_ALUOut >> 2)[1:0]];
       else if (EX_MEM_IR[6:0] == 7'b0100011) // sw
-          data_mem[(EX_MEM_ALUOut >> 2) & 2'b11] <= EX_MEM_B;
+          data_mem[(EX_MEM_ALUOut >> 2)[1:0]] <= EX_MEM_B;
     end
     else if (!start) begin
         MEM_WB_IR <= 0;
@@ -297,9 +297,9 @@ assign uo_out[4:1] = x3;
     if (start && !halt_flag) begin
       case (MEM_WB_IR[6:0])
         7'b0110011, 7'b0010011, 7'b1101111:
-            regfile[MEM_WB_rd & 3'b111] <= MEM_WB_ALUOut;
+            regfile[MEM_WB_rd[2:0]] <= MEM_WB_ALUOut;
         7'b0000011:
-            regfile[MEM_WB_rd & 3'b111] <= MEM_WB_LMD;
+            regfile[MEM_WB_rd[2:0]] <= MEM_WB_LMD;
         7'b1110011:
           halt_flag <= 1; // ebreak
       endcase
